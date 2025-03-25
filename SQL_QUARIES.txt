@@ -1,0 +1,162 @@
+What is Database?
+
+   Database is the collection  of data in format that can be easily accessed(Digital).
+
+   A Software application used to managed our Database is called DBMS(Database Management System).
+
+What is SQL?(Structured query language)
+
+   SQL is programming language used to interact with relational databases.
+
+    it is used to perform CRUD operations:
+            Create
+            Read
+            Update
+            delete
+
+THERE ARE SOME CONSTRAINTS WE USE IN CREATION OF DATABASE
+          The following constraints are commonly used in SQL:
+
+             PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+             NOT NULL -    Ensures that a column cannot have a NULL value
+             UNIQUE -      Ensures that all values in a column are different
+             FOREIGN KEY - Refers to the primary key of another table.  there can be multiple FKs IT can have duplicate & null values
+             CHECK -       Ensures that the values in a column satisfies a specific condition
+             DEFAULT -     Sets a default value for a column if no value is specified
+             CREATE INDEX -Used to create and retrieve data from the database very quickly
+
+
+Some of The Most Important SQL Commands:-
+
+             SELECT -          extracts data from a database
+             UPDATE -          updates data in a database
+             DELETE -          deletes data from a database
+             INSERT INTO -     inserts new data into a database
+             CREATE DATABASE - creates a new database
+             ALTER DATABASE -  modifies a database
+             CREATE TABLE -    creates a new table
+             ALTER TABLE -     modifies a table
+             DROP TABLE -      deletes a table
+             CREATE INDEX -    creates an index (search key)
+             DROP INDEX -      deletes an index
+
+
+Types of SQL Commands:-
+
+         DDL (Data Definition Language):
+                CREATE: Creates a new table or database.
+                ALTER: Modifies an existing database object.
+                DROP: Deletes an entire table, database, or other objects.
+                TRUNCATE: Removes all records from a table, deleting the space allocated for the records.
+
+         DQL – Data Query Language
+                SELECT: It is used to retrieve data from the database
+
+         DML (Data Manipulation Language):
+                INSERT: Adds new data to a table.
+                UPDATE: Modifies existing data within a table.
+                DELETE: Removes data from a table.
+
+         DCL (Data Control Language):
+                GRANT: Gives users access privileges to the database.
+                REVOKE: Removes access privileges given with the GRANT command.
+
+         TCL (Transaction Control Language):
+                COMMIT: Saves all changes made in the current transaction.
+                ROLLBACK: Restores the database to the last committed state.
+                SAVEPOINT: Sets a savepoint within a transaction.
+                SET TRANSACTION: Places a name on a transaction.
+
+NOTE:---
+         MOST OF THE TIME WE USE "DDL, DQL, DML" 
+
+         BUT FOR PROJECTS IN WHICH WE HAVE TO GIVE ACCESS TO ONE PERSON AND ANOTHER ACCESS GIVEN IN OTHER PERSON
+         WE USE "DCL"
+
+         AND FOR ADVANCE SQL QUERY WE USE "TCL"
+
+
+
+Create database:-
+         CREATE DATABASE db_name;
+
+Drop/ Delete database:-
+         drop database db_name;
+
+TO use the Database:-
+         USE db_name;
+
+
+
+   {{{ First of all we use the database where we have to create table. 
+    let suppose database name is "College" and table name is "student"}}}
+
+               table_name = student
+
+To Create table:-
+
+     use college;
+        create table table_name(
+           column_name1 datatype constraint,
+           column_name2 datatype constraint
+           column_name3 datatype constraint
+           );
+           
+           example:-
+              create table student(
+                 rollno int primary key,
+                 name varchar(50),
+                 age int not null
+                );
+
+DROP/DELETE TABLE:
+          drop table student;
+
+VIEW ALL DATA OF TABLE :-
+          select * from student;
+
+INSERT INTO TABLE:-
+          insert into student
+            ( columnName1, columnName2 )  
+          values
+            (col1_v1, col2_v2) 
+            (col1_v1, col2_v2)     
+           
+    columnName1=rollno
+    columnName2=name
+
+          insert into student
+             (rollno, name)
+          values
+             (01, "Amardeep"),
+             (02, "Krishna");
+           
+            
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
