@@ -1,0 +1,1098 @@
+Query life cycle
+-----------------
+
+Execution order: FROM-> JOIN-> WHERE-> GROUP BY-> HAVING-> ORDER BY-> SELECT
+Writting order:  SELECT-> FROM-> JOIN-> WHERE-> GROUP BY-> HAVING-> ORDER BY  
+
+Login with HR account 
+  username:  hr
+  password:  hr
+  
+  login to admin account and unlock hr 
+    -> alter user hr account unlock; 
+
+HR Account ready-made tables:
+
+	SELECT * FROM TAB;
+	SELECT * FROM REGIONS;
+	SELECT * FROM COUNTRIES;
+	SELECT * FROM LOCATIONS;
+	SELECT * FROM DEPARTMENTS;
+	SELECT * FROM JOBS;
+	SELECT * FROM EMPLOYEES;
+	SELECT * FROM JOB_HISTORY;	
+	
+
+Q: WAQ to fetch region-name and their country-name?	
+
+SELECT REGION_NAME, COUNTRY_NAME
+FROM REGIONS R INNER JOIN  COUNTRIES C
+ON R.REGION_ID = C.REGION_ID
+
+
+Q: WAQ to fetch country-name belonging to region europe and asia but display data in ascending order of region_name?
+
+SELECT REGION_NAME, COUNTRY_NAME
+FROM REGIONS R INNER JOIN  COUNTRIES C
+ON R.REGION_ID = C.REGION_ID
+WHERE REGION_NAME IN('Asia','Europe')
+ORDER BY REGION_NAME; 	
+
+
+Operators[IN, NOT IN, BETWEEN, LIKE, =, >, >=, <, <=, AND, OR]
+==============================================================
+
+Use of Like operator:
+---------------------
+
+Q: WAQ to fetch all record of employees whose name start with S character?
+
+select *
+from employees
+where first_name like 'S%'
+
+Q: WAQ to fetch all record of employees whose name ends with y character?
+
+select *
+from employees
+where first_name like '%y'
+
+
+Q: WAQ to fetch all record of employees whose name ends with ey character?
+
+select *
+from employees
+where first_name like '%ey'
+
+Q: WAQ to fetch all record of employees whose name second last character is e?
+
+select *
+from employees
+where first_name like '%e_'
+
+Q: WAQ to fetch all record of employees whose name start with S and R character?
+
+select *
+from employees
+where first_name like 'S%' or first_name like 'R%'
+
+Q: WAQ to fetch all record of employees whose name contains m character?
+
+select *
+from employees
+where first_name like '%m%'
+
+
+
+Use of AND and OR operator:
+---------------------------
+
+Q: WAQ to fetch all record of employees whose salary is less 10000 and higher than 20000?
+
+Select *
+from employees
+where salary < 10000 or salary > 20000
+
+
+Q: WAQ to fetch all record of employees whose salary is between 10000 to 20000?
+
+Select *
+from employees
+where salary >= 10000 and salary <= 20000
+
+Select *
+from employees
+where salary between 10000 and 20000;
+
+Q: WAQ to fetch all record of employees whose salary is higher than 10000 and lesser than 20000?
+
+
+Select *
+from employees
+where salary > 10000 and salary < 20000
+
+For curiosity purpose
+---------------------
+Select e.*, e.*
+from employees e
+
+Select rowid, rownum, e.*
+from employees e
+
+
+
+
+Use of IN, NOT IN operator:
+---------------------------
+
+Q: WAQ to fetch all record of employees whose employee_id is 101,110,111?
+
+
+Q: Query to find single record?
+
+select * 
+from employees
+where employee_id = 101
+
+Q: Query to find multiple record?
+
+select * 
+from employees
+where employee_id IN (101,110,111)
+
+
+Q: Query to find all records except few?
+
+select * 
+from employees
+where employee_id NOT IN (101,110,111)
+
+
+
+
+
+
+
+Sql Commands
+============
+1) DDL(Data Definition Language)     -> create, alter, drop, truncate
+2) DML(Data Manipulation Language)   -> insert, update, delete
+3) DCL(Data Control Language)        -> grant, revoke
+4) TCL(Transaction Control Language) -> savepoint, rollback, commit
+5) DQL(Data Query Language)          -> select
+
+1)DDL[create, alter, drop, truncate]	
+-------------------------------------
+
+CREATE TABLE STUDENT
+(
+  S_ID NUMBER(6),
+  S_NAME VARCHAR2(40),
+  S_ROLL_NUM NUMBER(10),
+  EMAIL VARCHAR2(40),
+  FEES NUMBER(10,2),
+  DATE_OF_BIRTH DATE
+);
+
+DESC STUDENT;
+DESCRIBE STUDENT;
+
+DROP TABLE STUDENT;
+
+SELECT * FROM STUDENT;
+
+
+Q: Diffrenece between DELETE and  TRUNCATE COMMAND
+--------------------------------------------------
+           
+1. DELETE is comes under DML command because it is used to delete record or group of records 
+or entire records from the table other hand TRUNCATE command comes under the DDL category because it 
+is used to clear records from the table to re-structuring table.
+
+2. DELETE operation will be slower than TRUNCATE operation because after DELETE it makes backup od deleted data.
+3. Data recovery is possible when deleted by DELETE command but not recoverable if truncated. 
+
+Ex:
+----
+CREATE TABLE STUDENT
+(
+  S_ID NUMBER(6),
+  S_NAME VARCHAR2(40),
+  EMAIL VARCHAR2(40),
+  FEES NUMBER(10,2),
+  DATE_OF_BIRTH DATE
+);
+
+INSERT ALL 
+INTO STUDENT VALUES(1,'RAJ',1012,'RAJ@GMAIL.COM',23000.50,'24-JAN-1989')
+INTO STUDENT VALUES(2,'NEETU',1013,'NEETU@GMAIL.COM',23000.50,'25-FEB-1990')
+INTO STUDENT VALUES(3,'RAJESH',1014,'RAJESH@GMAIL.COM',23000.50,'04-SEP-1988')
+INTO STUDENT VALUES(4,'KESHAV',1015,'KESHAV@GMAIL.COM',23000.50,'12-MAR-1988')
+INTO STUDENT VALUES(5,'MOHAN',1016,'MOHAN@GMAIL.COM',23000.50,'22-APR-1989')
+SELECT * FROM DUAL;
+
+TRUNCATE TABLE STUDENT;
+DELETE FROM STUDENT;
+
+TRUNCATE TABLE STUDENT WHERE ID=2; --Not permittable
+DELETE FROM STUDENT WHERE ID=2;
+DELETE FROM STUDENT WHERE ID IN(2,3,5);
+
+
+
+ALTER COMMAND:
+---------------
+
+ALTER TABLE STUDENT ADD S_CONTACT NUMBER(12);
+ALTER TABLE STUDENT DROP COLUMN S_CONTACT;
+ALTER TABLE STUDENT MODIFY S_CONTACT NUMBER(10);
+ALTER TABLE STUDENT DROP COLUMN S_CONTACT;
+ALTER TABLE STUDENT ADD PRIMARY KEY(S_ID);
+ALTER TABLE STUDENT ADD UNIQUE (EMAIL);
+ALTER TABLE STUDENT DROP PRIMARY KEY;
+ALTER TABLE STUDENT DROP UNIQUE (EMAIL);
+AND MANY MORE...
+
+
+
+
+2)DML[INSERT, UPDATE, DELETE]	
+------------------------------
+
+CREATE TABLE STUDENT
+(
+  S_ID NUMBER(6),
+  S_NAME VARCHAR2(40),
+  S_ROLL_NUM NUMBER(10),
+  EMAIL VARCHAR2(40),
+  FEES NUMBER(10,2),
+  DATE_OF_BIRTH DATE
+);
+
+
+INSERT Queries
+----------------------------------------------------------------------------------------
+INSERT INTO STUDENT VALUES(6,'NEHA',1018,'NEHA@GMAIL.COM',23000.50,'24-JAN-1991');
+
+INSERT INTO STUDENT(S_NAME,EMAIL,S_ID,DATE_OF_BIRTH,FEES) 
+VALUES(6,'NEHA',1018,'NEHA@GMAIL.COM',23000.50,'24-JAN-1991');
+
+INSERT INTO STUDENT(S_NAME,EMAIL,S_ID,DATE_OF_BIRTH,FEES) 
+VALUES('NEHA',1018,'NEHA@GMAIL.COM',7,'24-JAN-1991',23000.50);
+
+INSERT INTO STUDENT(S_ID,EMAIL) VALUES(8,'JOSEPH@GMAIL.COM');
+
+
+
+INSERT ALL 
+INTO STUDENT VALUES(1,'RAJ',1012,'RAJ@GMAIL.COM',23000.50,'24-JAN-1989')
+INTO STUDENT VALUES(2,'NEETU',1013,'NEETU@GMAIL.COM',23000.50,'25-FEB-1990')
+INTO STUDENT VALUES(3,'RAJESH',1014,'RAJESH@GMAIL.COM',23000.50,'04-SEP-1988')
+INTO STUDENT VALUES(4,'KESHAV',1015,'KESHAV@GMAIL.COM',23000.50,'12-MAR-1988')
+INTO STUDENT VALUES(5,'MOHAN',1016,'MOHAN@GMAIL.COM',23000.50,'22-APR-1989')
+SELECT * FROM DUAL;
+
+
+UPDATE Queries
+--------------------------------------------------------------------------------------------------------
+UPDATE STUDENT SET FEES = FEES-10000 WHERE S_ID = 3;
+UPDATE STUDENT SET EMAIL='RAJESH@YAHOO.IN', DATE_OF_BIRTH='14-SEP-1990' WHERE S_ID = 3; --VALID
+UPDATE STUDENT SET EMAIL='RAJESH@YAHOO.IN' AND DATE_OF_BIRTH='14-SEP-1990' WHERE S_ID = 3; --INVALID
+UPDATE STUDENT SET FEES = 25000 WHERE S_ID IN(2,4);
+UPDATE STUDENT SET FEES = FEES+5000
+
+
+
+DELETE Queries
+--------------------------------------------------------------------
+DELETE FROM STUDENT; -> Delete all the records from table.
+DELETE FROM STUDENT WHERE ID=2;
+DELETE FROM STUDENT WHERE ID IN(2,3,5);
+
+
+
+
+Use of DUAL table in oracle:
+------------------------------------------------------------------------------------
+It is a supporting table given by oracle to execute some relevant queries
+
+Ex:
+---
+SELECT * FROM DUAL;
+
+SELECT SYSDATE FROM DUAL;  
+SELECT 2*4 FROM DUAL;
+
+SELECT POWER(2,3) FROM DUAL;
+
+
+
+
+
+
+DAY 2
+==============================================================================================================
+
+Constraints(Business Rules)[Total 6 constraints]
+-------------------------------------------------------------------
+1) PRIMARY KEY
+2) UNIQUE KEY
+3) NOT NULL     -> Only can not be apply on table level
+4) FOREIGN KEY
+5) CHECK
+6) DEFAULT
+
+
+
+CREATE TABLE TBL_USER
+(
+  ID NUMBER(10),
+  NAME VARCHAR2(30),
+  CITY VARCHAR2(30),
+  CONTACT_NO VARCHAR2(15),
+  EMAIL VARCHAR2(50),
+  ADHAR_NUM VARCHAR2(15),
+  HEIGHT NUMBER(4,2)
+)
+
+
+
+INSERT INTO TBL_USER VALUES(101,'RAVI','THANE','9876543210','RAJ@GMAIL.COM','111122223333',5.6);
+
+INSERT INTO TBL_USER VALUES('RAVI',101,'THANE','RAJ@GMAIL.COM','9876543210','111122223333',5.6);
+INSERT INTO TBL_USER(NAME,ID,CITY,EMAIL,CONTACT_NO,ADHAR_NUM,HEIGHT) VALUES('RAVI',101,'THANE','RAJ@GMAIL.COM','9876543210','111122223333',5.6);
+
+INSERT INTO TBL_USER VALUES(101,'RAVI');
+
+INSERT INTO TBL_USER(ID,NAME,CITY,CONTACT_NO,EMAIL,ADHAR_NUM,HEIGHT) VALUES(101,'RAVI','THANE','9876543210','RAJ@GMAIL.COM','111122223333',5.6);
+INSERT INTO TBL_USER(ID,NAME) VALUES(101,'RAVI');
+
+
+
+1)Features of PRIMARY KEY
+---------------------------
+
+a) At one table only 1 primary key allowed.
+b) Primary key column can not have null values.
+c) Primary key can be apply on column level as well as table level.
+d) When a primary key applied on a table then an "unique index" generated automatically which will be responsible to 
+restrict duplicates in primary key column. 
+e) Maximum 16 columns can be used to make composite primary key.
+f) Primary key can be used to map in child classes using foreign key.
+
+
+
+
+
+
+2)Features of Unique key[Same as primary key features but having 2 differences]
+-------------------------------------------------------------------------------
+Difference
+a) At one table more than 1 unique key allowed.
+b) Unique key column can accept null values.
+
+Similarities
+c) Unique key can be apply on table column level as well as table level.
+d) When a Unique key applied on a table then an "unique index" generated automatically which will be responsible to 
+restrict duplicates in primary key column. 
+e) Maximum 16 columns can be used to make composite Unique key.
+f) Unique key can be used to map in child classes using foreign key.
+
+
+CREATE TABLE TBL_USER
+(
+  ID NUMBER(10) CONSTRAINT UNIQUE_ID UNIQUE NOT NULL,
+  NAME VARCHAR2(30),
+  CITY VARCHAR2(30),
+  CONTACT_NO VARCHAR2(15) CONSTRAINT UNIQUE_CONTACT UNIQUE,
+  EMAIL VARCHAR2(50) CONSTRAINT UNIQUE_EMAIL UNIQUE,
+  ADHAR_NUM VARCHAR2(15) CONSTRAINT UNIQUE_ADHAR UNIQUE,
+  HEIGHT NUMBER(4,2)
+);
+
+
+HW -> Can NOT NULL constraint be apply at table level?
+
+
+
+
+
+
+
+
+
+
+
+
+
+DAY 3 (07-Aug-2023)
+==============================================================================================================
+
+Constraints(Business Rules)[Total 6 constraints]
+-------------------------------------------------------------------
+1) PRIMARY KEY
+2) UNIQUE KEY
+3) NOT NULL     -> Only can not be apply on table level
+4) FOREIGN KEY
+5) CHECK
+6) DEFAULT
+
+
+
+
+5) CHECK & DEFAULT Constraints
+
+CREATE TABLE STUDENT
+(
+  S_ID NUMBER(6) PRIMARY KEY,
+  S_NAME VARCHAR2(40) NOT NULL CONSTRAINT CHK_UPPER_NAME CHECK (S_NAME = UPPER(S_NAME)),
+  S_ROLL_NUM VARCHAR2(10) NOT NULL CONSTRAINT CHK_START_FROM_S_CHAR CHECK (S_ROLL_NUM LIKE('S%')),
+  EMAIL VARCHAR2(40) UNIQUE,
+  ADHAR_CARD VARCHAR2(12) UNIQUE CONSTRAINT CHK_ADHAR12_DIGITS CHECK (LENGTH(ADHAR_CARD) = 12),  
+  FEES NUMBER(10,2),
+  DATE_OF_BIRTH DATE,
+  GENDER CHAR(1) DEFAULT 'F' 
+  
+ )
+ 
+ 
+ CREATE TABLE TBL_USER
+(
+  ID NUMBER(10),
+  NAME VARCHAR2(30) NOT NULL CONSTRAINTS CHK_NAME_UPPER CHECK (NAME = UPPER(NAME)),
+  CITY VARCHAR2(30),
+  CONTACT_NO VARCHAR2(15) UNIQUE CONSTRAINTS CHK_CONTACT_MUST_10_DIGIT CHECK (CONTACT_NO BETWEEN 6666666666 AND 9999999999),                        
+  EMAIL VARCHAR2(50),
+  ADHAR_NUM VARCHAR2(15),
+  HEIGHT NUMBER(4,2)
+);
+
+
+CREATE TABLE TBL_DUMMY(ID INT, NAME VARCHAR2(40) UNIQUE);
+
+DROP TABLE TBL_DUMMY;
+
+INSERT INTO TBL_DUMMY VALUES(1, NULL);
+INSERT INTO TBL_DUMMY VALUES(2, '');
+
+SELECT * FROM TBL_DUMMY;
+
+
+SELECT ASCII('A') FROM DUAL;
+
+SELECT ASCII('z') FROM DUAL;
+
+SELECT ASCII(' ') FROM DUAL;
+SELECT ASCII('') FROM DUAL;
+SELECT ASCII(null) FROM DUAL;
+
+
+
+
+
+
+4) FOREIGN KEY CONSTRAINTS
+---------------------------
+
+Normalization
+1. 1NF-> first normal form-> Every table must have primary key and data must be atomic.
+2. 2NF-> Dependency of columns must not be more than one column.
+
+HAS-A Relation
+
+
+CREATE TABLE DEPT(
+  DID NUMBER(10),
+  DNAME VARCHAR2(40) NOT NULL  
+)
+
+
+INSERT ALL
+INTO DEPT VALUES(1,'ACCOUNT')
+INTO DEPT VALUES(2,'SALES')
+INTO DEPT VALUES(3,'HR')
+INTO DEPT VALUES(4,'TECHNICAL')
+INTO DEPT VALUES(5,'RESEARCH')
+SELECT * FROM DUAL;
+
+SELECT * FROM DEPT;
+
+
+CREATE TABLE EMP(
+
+  EID NUMBER(10) PRIMARY KEY,
+  ENAME VARCHAR2(40) NOT NULL,
+  SALARY NUMBER(10,2) ,
+  ADHAR_NUM VARCHAR2(12) UNIQUE,
+  DID NUMBER(10) REFERENCES DEPT(DID),-> Column level
+  FOREIGN KEY(DID) REFERENCES DEPT(DID) -> Table level
+)
+
+CREATE TABLE EMP(
+
+  EID NUMBER(10) PRIMARY KEY,
+  ENAME VARCHAR2(40) NOT NULL,
+  SALARY NUMBER(10,2) ,
+  ADHAR_NUM VARCHAR2(12) UNIQUE,
+  DID NUMBER(10),
+  FOREIGN KEY(DID) REFERENCES DEPT(DID) ON DELETE CASCADE
+)
+
+CREATE TABLE EMP(
+
+  EID NUMBER(10) PRIMARY KEY,
+  ENAME VARCHAR2(40) NOT NULL,
+  SALARY NUMBER(10,2) ,
+  ADHAR_NUM VARCHAR2(12) UNIQUE,
+  DID NUMBER(10),
+  FOREIGN KEY(DID) REFERENCES DEPT(DID) ON DELETE SET NULL
+)
+
+DROP TABLE EMP;
+
+
+INSERT ALL
+INTO EMP VALUES(1,'RAJ',20000,'111122223333',3)  
+INTO EMP VALUES(2,'NEHA',50000,'211122223333',3)
+INTO EMP VALUES(3,'NILESH',20000,'311122223333',2)
+INTO EMP VALUES(4,'KUMUD',60000,'151122223333',2)
+INTO EMP VALUES(5,'RAJESH',29000,'171122223333',3)
+INTO EMP VALUES(6,'HEMA',40000,'111822223333',4)
+INTO EMP VALUES(7,'JITENDRA',80000,'992122223333',4)
+INTO EMP VALUES(8,'KESHAV',70000,'111172223333',2)
+INTO EMP VALUES(9,'MOHAN',10000,'111129223333',1)
+INTO EMP VALUES(10,'OMKAR',90000,'111342223333',1)
+SELECT * FROM DUAL;
+
+SELECT * FROM DEPT;
+SELECT * FROM EMP;
+
+
+DROP TABLE DEPT;
+DROP TABLE EMP;
+
+DELETE FROM DEPT WHERE DID = 1;
+DELETE FROM DEPT WHERE DID = 2;
+DELETE FROM DEPT WHERE DID = 3;
+DELETE FROM DEPT WHERE DID = 5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+DAY 4 (08-Aug-2023)  -> Sql JOIN and Aggregate Functions
+==============================================================================================================
+
+Aggregate Functions[max, min, avg, count, sum]
+
+EX:
+
+SELECT MAX(SALARY) FROM EMPLOYEES;
+
+SELECT MIN(SALARY) FROM EMPLOYEES;
+
+SELECT AVG(SALARY) FROM EMPLOYEES;
+
+SELECT COUNT(COMMISSION_PCT) FROM EMPLOYEES;
+SELECT COUNT(*) FROM EMPLOYEES;
+
+SELECT MAX(FIRST_NAME) FROM EMPLOYEES;
+SELECT MIN(FIRST_NAME) FROM EMPLOYEES;
+SELECT AVG(FIRST_NAME) FROM EMPLOYEES;
+SELECT SUM(FIRST_NAME) FROM EMPLOYEES;
+
+
+
+
+
+
+
+SELECT
+FROM 
+JOIN
+WHERE 
+GROUP BY 
+HAVING
+ORDER BY 
+
+
+
+
+
+
+
+
+Queries
+1. WAQ to find total number of cities belonging to 
+country japan and united state?
+
+Solution: 
+ 
+SELECT COUNTRY_ID, COUNT(CITY) AS "TOTAL NO OF CITIES"
+FROM LOCATIONS
+GROUP BY COUNTRY_ID
+HAVING COUNTRY_ID IN('US','JP')
+ 
+Result:
+ 
+ COUNTRY ID    TOTAL CITIES
+ US            4 
+ jp            2
+ 
+ 
+ 
+2. WAQ to find total number of cities belonging to 
+country japan and united state not country id? 
+
+
+ASCII STYLE join queries
+-------------------------
+
+SELECT COUNTRIES.COUNTRY_NAME, COUNT(CITY) AS "TOTAL NO OF CITIES"
+FROM LOCATIONS 
+INNER JOIN COUNTRIES
+ON LOCATIONS.COUNTRY_ID = COUNTRIES.COUNTRY_ID
+GROUP BY COUNTRIES.COUNTRY_NAME
+HAVING COUNTRIES.COUNTRY_NAME IN('United States of America','Japan')
+
+
+
+
+SELECT C.COUNTRY_NAME, COUNT(CITY) AS "TOTAL NO OF CITIES"
+FROM LOCATIONS L
+INNER JOIN COUNTRIES C
+ON L.COUNTRY_ID = C.COUNTRY_ID
+GROUP BY C.COUNTRY_NAME
+HAVING C.COUNTRY_NAME IN('United States of America','Japan')
+ORDER BY C.COUNTRY_NAME 
+
+
+
+
+THETA STYLE join queries
+-------------------------
+
+
+SELECT COUNTRIES.COUNTRY_NAME, COUNT(CITY) AS "TOTAL NO OF CITIES"
+FROM LOCATIONS, COUNTRIES
+WHERE LOCATIONS.COUNTRY_ID = COUNTRIES.COUNTRY_ID
+GROUP BY COUNTRIES.COUNTRY_NAME
+HAVING COUNTRIES.COUNTRY_NAME IN('United States of America','Japan')
+
+
+
+
+SELECT C.COUNTRY_NAME, COUNT(CITY) AS "TOTAL NO OF CITIES"
+FROM LOCATIONS L, COUNTRIES C
+WHERE L.COUNTRY_ID = C.COUNTRY_ID
+GROUP BY C.COUNTRY_NAME
+HAVING C.COUNTRY_NAME IN('United States of America','Japan')
+ORDER BY C.COUNTRY_NAME
+
+
+
+
+
+THETA STYLE
+ASCII STYLE -> ON
+
+
+
+3. WAQ to display depertment_id-wise total salary?
+
+SELECT E.DEPARTMENT_ID, SUM(SALARY) AS "DEPARTMENT-WISE SALARY"
+FROM EMPLOYEES E
+GROUP BY E.DEPARTMENT_ID
+
+
+4. WAQ to display depertment_name-wise total salary?
+
+SELECT D.DEPARTMENT_NAME, SUM(SALARY) AS "DEPARTMENT-WISE SALARY"
+FROM EMPLOYEES E JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+GROUP BY D.DEPARTMENT_NAME
+
+
+
+Q: WAQ TO display highest salary of an employee and employee name?
+
+SELECT FIRST_NAME, SALARY 
+FROM EMPLOYEES 
+WHERE SALARY = (SELECT MAX(SALARY) FROM EMPLOYEES)
+
+SELECT MAX(SALARY)
+FROM EMPLOYEES 
+WHERE SALARY NOT IN (SELECT MAX(SALARY) FROM EMPLOYEES)
+
+
+
+Q: WAQ To display second highest salary of an employee?
+
+
+  select max(salary) from employees
+  where salary not in(select max(salary) from employees);
+  
+Q: WAQ To display third highest salary of an employee?
+
+   select max(salary) from employees
+   where salary not in((select max(salary) from employees),(select max(salary) from employees
+   where salary not in(select max(salary) from employees)));
+   
+   
+   
+   
+   
+   
+   
+   
+DAY 5 (09-Aug-2023)  -> Sql JOIN 
+==============================================================================================================  
+   
+   
+ 
+
+Sql JOIN queries:
+------------------
+
+DID	DNAME
+1	ACCOUNT
+2	SALES
+3	HR
+4	TECHNICAL
+5	RESEARCH
+
+
+
+EID	ENAME	SALARY	ADHAR_NUM	   DID
+1	RAJ	    20000	111122223333	3
+2	NEHA	50000	211122223333	3
+3	NILESH	20000	311122223333	2
+4	KUMUD	60000	151122223333	2
+5	RAJESH	29000	171122223333	3
+6	HEMA	40000	111822223333	4
+7	JITEND	80000	992122223333	4
+8	KESHAV	70000	111172223333	2
+9	MOHAN	10000	111129223333	1
+10	OMKAR	90000	111342223333	1
+11	GOKUL	90000	34567789433	    -
+12	JOJO	5000	2342342312	    -
+
+
+Q: WAQ to print department name and their employee names
+
+
+Types of JOIN:
+--------------
+
+1. Inner join -> Matching record of two table
+2. Outer join
+   -> Left outer join   -> Matching record of two table and non-matching record of left table.
+   -> Right outer join  -> Matching record of two table and non-matching record of right table.
+   -> Full outer join   -> Matching record of two table and non-matching record of left table and non-matching record of right table.
+3. Cross join  -> Cartesian product of two table
+4. Natural join
+5. Self join   
+
+
+
+There are two standard to write join queries
+1. ANSI style 
+    
+
+  select *
+  from dept inner join emp
+  on dept.did = emp.did;
+  
+  select *
+  from dept join emp
+  on dept.did = emp.did; 
+  
+  
+  select *
+  from dept left outer join emp
+  on dept.did = emp.did;
+  
+  select *
+  from dept right outer join emp
+  on dept.did = emp.did;
+  
+  select *
+  from dept full outer join emp
+  on dept.did = emp.did;
+  
+  
+  select *
+  from dept left join emp
+  on dept.did = emp.did;
+  
+  select *
+  from dept right join emp
+  on dept.did = emp.did;
+  
+  select *
+  from dept full join emp
+  on dept.did = emp.did;
+
+
+
+
+2. Theta style
+
+select *
+from dept , emp
+where dept.did = emp.did;
+
+
+select *
+from dept , emp
+where dept.did = emp.did(+);
+
+select *
+from dept , emp
+where dept.did(+) = emp.did;
+  
+===============================================================================================
+Practice Join queries
+----------------------
+ 
+tbl_country
+country_id   country_name 
+
+
+tbl_state 
+state_id    state_name   country_id
+
+
+tbl_city
+city_id    city_name   state_id
+
+
+tbl_emp
+e_id  e_name    salary   contact_no  city_id     
+
+
+
+Question:
+1. WAQ to display all country_name and their e_name?
+2. WAQ to display state_name and their employee whose salary is more than 50000?
+
+
+ANSI Style
+
+select country-name, e_name
+from tbl_country  inner join tbl_state 
+on tbl_country.country_id = tbl_state.country_id
+inner join tbl_city 
+on tbl_city.state_id = tbl_state.state_id
+inner join tbl_emp
+on tbl_city.city_id = tbl_emp.city_id
+
+
+
+Theta STYLE
+
+select country-name, e_name
+from tbl_country, tbl_state, tbl_city, tbl_emp
+where tbl_country.country_id = tbl_state.country_id
+and tbl_city.state_id = tbl_state.state_id
+and tbl_city.city_id = tbl_emp.city_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+DAY 6 (10-Aug-2023)  -> SELF JOIN 
+============================================================================================================== 
+
+CREATE TABLE EMPLOYEE
+(
+  EID NUMBER(10) PRIMARY KEY,
+  ENAME VARCHAR2(50) NOT NULL,
+  SALARY NUMBER(10,2),
+  CITY VARCHAR2(50),
+  MANAGER_ID NUMBER(10)
+)
+
+INSERT ALL 
+INTO EMPLOYEE VALUES(1,'KESHAV',24000,'THANE',3)
+INTO EMPLOYEE VALUES(2,'NEERAJ',22000,'MUMBAI',9)
+INTO EMPLOYEE VALUES(3,'AMIT',28000,'LUCKNOW',NULL)
+INTO EMPLOYEE VALUES(4,'SANJAY',29000,'THANE',3)
+INTO EMPLOYEE VALUES(5,'MITALI',34000,'MUMBAI',3)
+INTO EMPLOYEE VALUES(6,'BRIJESH',14000,'LUCKNOW',9)
+INTO EMPLOYEE VALUES(7,'SACHIN',44000,'MUMBAI',9)
+INTO EMPLOYEE VALUES(8,'DINESH',54000,'LUCKNOW',3)
+INTO EMPLOYEE VALUES(9,'AJAY',2800,'MUMBAI',NULL)
+INTO EMPLOYEE VALUES(10,'KUMUD',240000,'THANE',9)
+SELECT * FROM DUAL;
+
+SELECT * FROM EMPLOYEE;
+DROP TABLE EMPLOYEE;
+
+
+Q: WAQ to display all employee name along with their manager name? 
+
+SELECT E1.ENAME AS "EMP NAME", E2.ENAME AS "MANAGER NAME"
+FROM EMPLOYEE E1 JOIN EMPLOYEE E2
+ON E1.MANAGER_ID = E2.EID
+
+
+
+
+Sub-query vs join query
+-----------------------
+[When data required from one table but conditional data available in another table, 
+then only subquery can be used instead of join queries ]
+
+Q: WAQ to display emp name and salary belonging to department HR and SALES?
+
+USING SUBQUERY
+
+select ename, salary
+from emp
+where did in (select DID from dept where DNAME in('HR','SALES'))
+
+Using Join query
+
+SELECT ENAME, SALARY
+FROM EMP E JOIN DEPT D
+ON E.DID = D.DID
+WHERE DNAME IN('HR','SALES')
+
+
+Q: WAQ to display emp_name, salary and department_name of all employees?
+
+Note: This query can not be done using sub-query
+
+Using join
+-----------
+
+SELECT ENAME, SALARY, DNAME
+FROM DEPT D JOIN EMP E
+ON D.DID = E.DID
+
+
+
+----------------------------------------------------------------------------------------------------
+
+Q: Find the second, third, fourth highest salary of an employee?
+
+
+SELECT MAX(SALARY) FROM EMP
+
+--Query to display highest salary and employee name?
+
+SELECT ENAME, SALARY 
+FROM EMP
+WHERE SALARY = (SELECT MAX(SALARY) FROM EMP)
+
+--SECOND HIGHEST SALARY
+
+SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN(SELECT MAX(SALARY) FROM EMP)
+
+--THIRD HIGHEST SALARY
+
+SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN((SELECT MAX(SALARY) FROM EMP),(SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN(SELECT MAX(SALARY) FROM EMP)))
+
+--FOURTH HIGHEST SALARY 
+
+SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN((SELECT MAX(SALARY) FROM EMP),(SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN(SELECT MAX(SALARY) FROM EMP)),(SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN((SELECT MAX(SALARY) FROM EMP),(SELECT MAX(SALARY) 
+FROM EMP
+WHERE SALARY NOT IN(SELECT MAX(SALARY) FROM EMP)))))
+
+
+
+
+
+RANK() VS DENSE_RANK() FUNCTION
+
+
+A -> 9   SECONDS
+B -> 9.1 SECONDS
+C -> 9.1 SECONDS
+
+
+
+CREATE TABLE employee (
+  empno    NUMBER(4) CONSTRAINT pk_emp PRIMARY KEY,
+  ename    VARCHAR2(10),
+  job      VARCHAR2(9),
+  mgr      NUMBER(4),
+  hiredate DATE,
+  sal      NUMBER(7,2),
+  comm     NUMBER(7,2),
+  deptno   NUMBER(2)
+);
+
+INSERT ALL
+INTO employee VALUES (7369,'SMITH','CLERK',7902,to_date('17-12-1980','dd-mm-yyyy'),800,NULL,20)
+INTO employee VALUES (7499,'ALLEN','SALESMAN',7698,to_date('20-2-1981','dd-mm-yyyy'),1600,300,30)
+INTO employee VALUES (7521,'WARD','SALESMAN',7698,to_date('22-2-1981','dd-mm-yyyy'),1250,500,30)
+INTO employee VALUES (7566,'JONES','MANAGER',7839,to_date('2-4-1981','dd-mm-yyyy'),2975,NULL,20)
+INTO employee VALUES (7654,'MARTIN','SALESMAN',7698,to_date('28-9-1981','dd-mm-yyyy'),1250,1400,30)
+INTO employee VALUES (7698,'BLAKE','MANAGER',7839,to_date('1-5-1981','dd-mm-yyyy'),2850,NULL,30)
+INTO employee VALUES (7782,'CLARK','MANAGER',7839,to_date('9-6-1981','dd-mm-yyyy'),2450,NULL,10)
+INTO employee VALUES (7788,'SCOTT','ANALYST',7566,to_date('13-JUL-87','dd-mm-rr')-85,3000,NULL,20)
+INTO employee VALUES (7839,'KING','PRESIDENT',NULL,to_date('17-11-1981','dd-mm-yyyy'),5000,NULL,10)
+INTO employee VALUES (7844,'TURNER','SALESMAN',7698,to_date('8-9-1981','dd-mm-yyyy'),1500,0,30)
+INTO employee VALUES (7876,'ADAMS','CLERK',7788,to_date('13-JUL-87', 'dd-mm-rr')-51,1100,NULL,20)
+INTO employee VALUES (7900,'JAMES','CLERK',7698,to_date('3-12-1981','dd-mm-yyyy'),950,NULL,30)
+INTO employee VALUES (7902,'FORD','ANALYST',7566,to_date('3-12-1981','dd-mm-yyyy'),3000,NULL,20)
+INTO employee VALUES (7934,'MILLER','CLERK',7782,to_date('23-1-1982','dd-mm-yyyy'),1300,NULL,10)
+SELECT * FROM DUAL;
+
+
+
+SELECT SAL,DEPTNO,RANK() OVER(PARTITION BY DEPTNO ORDER BY SAL ASC) AS "RANK BASED ON SALARY" 
+FROM EMPLOYEE;
+
+SELECT SAL,DEPTNO,DENSE_RANK() OVER(PARTITION BY DEPTNO ORDER BY SAL ASC) AS "RANK BASED ON SALARY" 
+FROM EMPLOYEE;
+
+--Highest salary of an employee
+
+SELECT DISTINCT(SAL) FROM
+(SELECT SAL,DENSE_RANK()OVER(ORDER BY SAL DESC) AS RNK
+FROM EMPLOYEE)
+WHERE RNK=1
+
+--Second highest salary of an employee
+
+SELECT DISTINCT(SAL) FROM
+(SELECT SAL,DENSE_RANK()OVER(ORDER BY SAL DESC) AS RNK
+FROM EMPLOYEE)
+WHERE RNK=2
+
+--Third highest salary of an employee
+
+SELECT DISTINCT(SAL) FROM
+(SELECT SAL,DENSE_RANK()OVER(ORDER BY SAL DESC) AS RNK
+FROM EMPLOYEE)
+WHERE RNK=3
+
+
+
+SELECT DISTINCT(SAL) FROM
+(SELECT SAL,DENSE_RANK()OVER(ORDER BY SAL DESC) AS RNK
+FROM EMPLOYEE)
+WHERE RNK<=5
+
+MINUS
+
+SELECT DISTINCT(SAL) FROM
+(SELECT SAL,DENSE_RANK()OVER(ORDER BY SAL DESC) AS RNK
+FROM EMPLOYEE)
+WHERE RNK<=2
+
+
+
+
