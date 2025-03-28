@@ -15,6 +15,7 @@ What is SQL?(Structured query language)
             delete
 
 THERE ARE SOME CONSTRAINTS WE USE IN CREATION OF DATABASE
+================================================================
           The following constraints are commonly used in SQL:
 
              PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
@@ -27,6 +28,7 @@ THERE ARE SOME CONSTRAINTS WE USE IN CREATION OF DATABASE
 
 
 Some of The Most Important SQL Commands:-
+---------------------------------------------------------
 
              SELECT -          extracts data from a database
              UPDATE -          updates data in a database
@@ -39,40 +41,49 @@ Some of The Most Important SQL Commands:-
              DROP TABLE -      deletes a table
              CREATE INDEX -    creates an index (search key)
              DROP INDEX -      deletes an index
+             TRUNCATE  -       delete the all data of the table
 
 When we use update query in MySQL workbench directly the safe mode is on for by mistake update 
+====================================================================================================
+                                                                                                   |
+     to OFF that safe mode write a query                                                           |
+        "SET SQL_SAFE_UPDATES=0;"                                                                  |
 
-     to OFF that safe mode write a query
-        "SET SQL_SAFE_UPDATES=0;"
-
-     to ON that safe mode write a query
-        "SET SQL_SAFE_UPDATES=1;"
- 
-         HERE 0= OFF, 1= ON THE SAFE MODE
+     to ON that safe mode write a query                                                            |
+        "SET SQL_SAFE_UPDATES=1;"                                                                  |
+                                                                                                   |
+         HERE 0= OFF, 1= ON THE SAFE MODE                                                          |
+====================================================================================================
 
 
 
 Types of SQL Commands:-
+================================================
 
          DDL (Data Definition Language):
+----------------------------------------------------
                 CREATE: Creates a new table or database.
                 ALTER: Modifies an existing database object.
                 DROP: Deletes an entire table, database, or other objects.
                 TRUNCATE: Removes all records from a table, deleting the space allocated for the records.
 
          DQL – Data Query Language
+-----------------------------------------------------
                 SELECT: It is used to retrieve data from the database
 
          DML (Data Manipulation Language):
+----------------------------------------------------------
                 INSERT: Adds new data to a table.
                 UPDATE: Modifies existing data within a table.
                 DELETE: Removes data from a table.
 
          DCL (Data Control Language):
+----------------------------------------------------------
                 GRANT: Gives users access privileges to the database.
                 REVOKE: Removes access privileges given with the GRANT command.
 
          TCL (Transaction Control Language):
+----------------------------------------------------------
                 COMMIT: Saves all changes made in the current transaction.
                 ROLLBACK: Restores the database to the last committed state.
                 SAVEPOINT: Sets a savepoint within a transaction.
@@ -88,17 +99,21 @@ NOTE:---
 
 
  Some Keywords/ clause/ functions  which use in SQL Query:--
+=================================================================
             
 
  1). Distinct Keyword:-
+-----------------------------------------
                 The SELECT DISTINCT statement is used to return only distinct (different) values.
 
             
  2).WHERE clause :--
+-----------------------------------------
                   used to filter record
                   It is used to extract only those records that fulfill a specified condition.
 
             using of Operators in where 
+       -----------------------------------------
                 ARITHMETIC Operator: +, -, *, /, %
                 COMPARISON Operators: =, !=, >, >=, <, <=
                LOGICAL Operators : AND, OR, NOT, IN, BETWEEN, ALL, LIKE, ANY
@@ -106,14 +121,17 @@ NOTE:---
 
             
 3). LIMIT clause:--
+-----------------------------------------
                     sets limit on numbers of rows to be returned
 
             
  4). ORDER BY clause:-
+-----------------------------------------
                       used to sort the result into ascending or descending order.
 
          
   5). AGGREGATE Function:--
+-----------------------------------------
                  An aggregate function is a function that performs a calculation on a set of values, and returns a single value.
 
           there are many aggregate function but most commonly used function are:-
@@ -126,6 +144,7 @@ NOTE:---
 
        
  6). GROUP BY clause:--
+-----------------------------------------
               Groups rows that have same values into summary rows.
 
               it collects data from multiple records and groups the result by one or more column
@@ -135,6 +154,7 @@ NOTE:---
 
         
 7). HAVING clause :--
+-----------------------------------------
              Similar to WHERE i.e. applies some condition on rows 
 
              used when we want to apply any condition after grouping
@@ -144,6 +164,7 @@ NOTE:---
 
 
    ORDER Of Writing these keys and clause
+------------------------------------------------------------
             SELECT column(s)
             FROM table_name
             WHERE condition
@@ -154,18 +175,86 @@ NOTE:---
 
      SELECT ===> FROM ===> WHERE ===> GROUP BY ===> HAVING ===> ORDER BY
 
+
+
+
+         JOINS IN SQL
+==============================================================
+
+Joins is used to combine rows from two or more tables, based on related column between them
+
+TYPES OG JOIN
+--------------------------------------------------------------
+ 1). INNER JOIN:- Returns record that have matching values in both tables
+
+2).LEFT JOIN:-- Returns all record from the left table and the matched record from right table
+
+3). RIGHT JOIN:-- Returns all record from the right table and the matched record from right table
+
+4). FULL JOIN:-Returns all record when there is a match either in left or right table
+
+
+
+NOTE:--
+--------------
+       LEFT JOIN, RIGHT JOIN , FULL JOIN are the parts of OUTER JOIN
+
+  LEFT JOIN----------|
+  RIGHT JOIN         |------ OUTER JOIN
+  FULL JOIN----------|
  
 
-   
+                 UNION
+===================================================
+It is used to combine the result-set of two or more SELECT statements
+Gives UNIQUE record
+
+to use it:-
+         * every SELECT should have same no. of columns
+          
+         * columns must have similar data types
+
+         * columns in every SELECT should be in same order 
+
+
+                 UNION ALL
+===================================================
+It is used to combine the result-set of two or more SELECT statements
+It gives all records of the both table.
+
+
+
+SQL Sub Queries
+================================
+A Subquery or inner query or a nested query is a query within another SQL query
+
+it involves 2 select statements
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 Create database:-
+-----------------------------------------
          CREATE DATABASE db_name;
 
 Drop/ Delete database:-
+-----------------------------------------
          drop database db_name;
 
 TO use the Database:-
+-----------------------------------------
          USE db_name;
 
 
@@ -176,6 +265,7 @@ TO use the Database:-
                table_name = student
 
 To Create table:-
+--------------------------------------------
 
      use college;
         create table table_name(
@@ -192,12 +282,15 @@ To Create table:-
                 );
 
 DROP/DELETE TABLE:
+--------------------------------------
           drop table student;
 
 VIEW ALL DATA OF TABLE :-
+-------------------------------------
           select * from student;
 
 INSERT INTO TABLE:-
+----------------------------------
           insert into student
             ( columnName1, columnName2 )  
           values
@@ -214,6 +307,7 @@ INSERT INTO TABLE:-
              (02, "Krishna");
 
 Use of FOREIGN KEY Constraint:--
+=========================================================
                 The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
 
                 A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
@@ -226,6 +320,7 @@ Use of FOREIGN KEY Constraint:--
  
 
 Use of DEFAULT Constraint:-- 
+======================================================
               if the starting salary is 20000 then we use       DEFAULT constraint through this default value already assigned but we can change this if person had 25000 salary then we can change it otherwise table had default value
 
                     create table emp (
@@ -234,7 +329,9 @@ Use of DEFAULT Constraint:--
                     );
             insert into emp (id) values (01);
 
-Use of CHECK Constraint:-- it is used to limit the value range that can be placed in a column.
+Use of CHECK Constraint:-- 
+===========================================
+              it is used to limit the value range that can be placed in a column.
      
 
             CREATE TABLE Persons (
@@ -255,6 +352,7 @@ Use of CHECK Constraint:-- it is used to limit the value range that can be place
                here we can write anything int he palce of CHK_Person.
 
      use of Distinct keyword:--
+=============================================
             used for different value
               SELECT DISTINCT City FROM Persons;
 
@@ -264,6 +362,7 @@ Use of CHECK Constraint:-- it is used to limit the value range that can be place
            it show only Delhi, Mumbai And Kolkata it cannot repeat city name
 
  Use of Where Clause:--
+===================================
           used to filter records.
 
              select * from Persons WHERE City = 'Delhi';
@@ -271,29 +370,35 @@ Use of CHECK Constraint:-- it is used to limit the value range that can be place
             AND OPERATOR :- select* from Persons WHERE Age=50 AND City ="Delhi"
       here it satisfy both conditions 
 
-         OR OPERATOR :- select * from Persons WHERE Age=50 OR City ="Delhi"
+         OR OPERATOR :-
+     ------------------------------------------------------------------
+               select * from Persons WHERE Age=50 OR City ="Delhi"
 
-     here if single condition match it print the table
+               here if single condition match it print the table
 
-         BETWEEN OPERATOR (Select from a given range):- 
+       BETWEEN OPERATOR (Select from a given range):-
+     ------------------------------------------------------------------ 
 
             select * from Persons WHERE Age BETWEEN 50 And 60;
 
                   it gives all member name whose age 50, 51,52,.........,60
     
-         IN OPERATOR (Matches any value in the list):--
+       IN OPERATOR (Matches any value in the list):--
+     ------------------------------------------------------------------
                   
             select * from Persons WHERE City IN ("Delhi", "Mumbai")
 
                     it gives all members who is from in delhi or mumbai
 
-         NOT OPERATOR (it give opposite value of given condition):--
+        NOT OPERATOR (it give opposite value of given condition):--
+       ------------------------------------------------------------------
 
             select * from Persons WHERE Age NOT BETWEEN 50 AND 60;
 
               it cannot gives member name whose age 50, 51,52,.........,60
  
  Use of LIMIT Clause:--
+==================================
 
        use to set the limit on number of rows:
           select col1, col2 from table_name limit number;
@@ -304,6 +409,7 @@ Use of CHECK Constraint:-- it is used to limit the value range that can be place
                       it gives only 3 staring row from the data.
 
  use of ORDER BY keyword:--
+======================================
               used to sort the result into ascending(ASC) or descending(DESC)
       
              a). Select  * from Persons ORDER BY City asc; 
@@ -313,13 +419,16 @@ Use of CHECK Constraint:-- it is used to limit the value range that can be place
                         b give only 3 rows of table alphabetically by city
 
  Use of AGGREGATE function:-
+=============================
             An aggregate function is a function that performs a calculation on a set of values, and returns a single value.
 
              select MAX(Age) from Persons;
 
 
 use of GROUP BY clause:--
+===========================
               6). GROUP BY clause:--
+----------------------------------------------
               Groups rows that have same values into summary rows.
 
                        select City , count(ID) from Persons group by City
@@ -330,6 +439,7 @@ use of GROUP BY clause:--
 
 
 use of HAVING clause:-
+===============================
 
              Similar to WHERE i.e. applies some condition on rows 
 
@@ -341,6 +451,7 @@ use of HAVING clause:-
              HAVING max(Age)>40;
 
 to UPDATE the table:--
+================================
 
       UPDATE Persons SET Age = 42 WHERE Age = 40;
    
@@ -356,6 +467,7 @@ to DELETE the rows or existing rows:--
 
 
 CASCADING OF FOREIGN KEY()FK:--
+========================================
 
    What is Cascade?
 
@@ -364,6 +476,7 @@ CASCADING OF FOREIGN KEY()FK:--
 
 
   1).  On DELETE Cascade:--
+------------------------------------
                    when we create a FK using this option it deletes the referencing rows in the child table when the referenced row is deleted in the parent table which has primary key
 
                                OR
@@ -373,6 +486,7 @@ CASCADING OF FOREIGN KEY()FK:--
 
 
 2). On UPDATE Cascade:-- 
+-------------------------------
                  when we create a foreign key using UPDATE CASCADE the referencing rows are update in child table when the referenced row is updated in the parent table which has a primary key.
 
                               OR
@@ -403,7 +517,235 @@ WRITE A QUERY TO UPADTE
             
               update dept set id = "new id" where id="old id";
 
-      
+
+              TABLE RELATED QUERIE
+=================================================
+
+             Used to change the schema
+                       schema:-- it is design of columns, columns datatype, columns constraints. 
+
+
+ To add a column
+---------------------------------------
+                 ALTER TABLE table_name 
+                 ADD COLUMN column_name datatype constraint;
+
+
+                 ALTER TABLE Persons 
+                 ADD COLUMN age INT;
+
+ To Drop column
+--------------------------------
+                  ALTER TABLE table_name 
+                  DROP COLUMN column_name;
+
+
+                  ALTER TABLE Persons 
+                  DROP column age INT;
+
+To Rename Table
+------------------------------------------
+                 ALTER TABLE table_name 
+                 RENAME TO new_table_name;
+
+                 Alter table Persons
+                 Rename to Person;
+
+To Change Column(Rename)
+--------------------------------------------
+                 ALTER TABLE table_name 
+                CHANGE COLUMN old_column_name new_column_name new_datatype new constraints;
+
+                alter table Person
+                change column Age UMAR Varchar(50) not null;
+
+Modify column(Modify datatype/constraints)
+-----------------------------------------------
+                 ALTER TABLE table_name 
+                 CHANGE COLUMN coumn_name new_datatype new constraints;
+
+                Alter table Person
+                change column Umar int;
+
+         Use of TRUNCATE
+----------------------------------------------
+
+                   delete all the data of the table
+
+
+                TRUNCATE TABLE table_name;
+              
+                   TRUNCATE TABLE Person;
+
+
+Practice Question 
+============================
+Qs: In the Person table: 
+=============================
+a. Change the name of column name" to "full_name". 
+b. Delete all the students who scored age greater than 80. 
+c. Delete the column for age.
+
+
+a).    Alter table Person change column name full_name varchar(50)/
+       Alter table Person change name full_name varchar(50)
+
+b).    delete from Person where age>60
+
+c).    alter table Person drop column age
+
+
+         JOINS IN SQL
+==============================================================
+
+Joins is used to combine rows from two or more tables, based on related column between them
+
+
+types of joins
+=============================
+
+              INNER JOIN
+========================================================
+
+Returns record that have matching values in both tables
+
+syntax:-
+
+            SELECT column(s)
+            FROM tableA
+            INNER JOIN tableB
+            ON tableA.col_name = tableB.col_name;
+
+         example with dept and teacher table
+ -------------------------------------------------------------
+
+            SELECT * FROM dept
+            INNER JOIN teacher
+            ON dept.id = teacher.dept_id;
+
+
+                   LEFT JOIN
+=======================================================
+
+Returns all record from the left table and the matched record from right table
+
+syntax:-- 
+             SELECT column(s)
+             FROM tableA
+             LEFT JOIN tableB
+             ON tableA.col_name = tableB.col_name;
+
+            example with dept and teacher table
+ -------------------------------------------------------------
+
+            SELECT * FROM dept
+            LEFT JOIN teacher
+            ON dept.id = teacher.dept_id;
+
+
+              RIGHT JOIN
+===================================================
+
+Returns all record from the right table and the matched record from right table
+
+syntax:-- 
+             SELECT column(s)
+             FROM tableA
+             RIGHT JOIN tableB
+             ON tableA.col_name = tableB.col_name;
+
+              example with dept and teacher table
+ -------------------------------------------------------------
+
+            SELECT * FROM dept
+            RIGHT JOIN teacher
+            ON dept.id = teacher.dept_id;
+
+
+                    FULL JOIN
+=============================================================
+
+Returns all record when there is a match either in left or right table
+
+syntax in MySQL :-- 
+          
+              example with dept and teacher table
+ -------------------------------------------------------------
+
+            SELECT * FROM dept AS a
+            LEFT JOIN teacher AS b
+            ON a.id = b.dept_id
+            UNION
+            SELECT * FROM dept AS a
+            RIGHT JOIN teacher AS b
+            ON a.id = b.dept_id;
+            
+
+
+                 UNION
+===================================================
+It is used to combine the result-set of two or more SELECT statements
+Gives UNIQUE record
+
+to use it:-
+         * every SELECT should have same no. of columns
+          
+         * columns must have similar data types
+
+         * columns in every SELECT should be in same order 
+
+syntax:-
+        SELECT column(s) FROM tableA
+        UNION
+        SELECT column(s) FROM tableB
+
+example   select name from dept
+          UNION
+          select name from teacher;
+
+
+
+
+SQL Sub Queries
+================================
+A Subquery or inner query or a nested query is a query within another SQL query
+
+it involves 2 select statements
+
+Syntax:--
+--------------
+SELECT column(s)
+From table_name
+where col_name operator
+(subquery);
+
+
+
+EXAMPLE WITH QUESTIONS:--
+----------------------------------------------------
+ SQL Sub Queries 
+Example 
+Get names of all students who scored more than class average. 
+Step 1. Find the avg of class 
+Step 2. Find the names of students with marks > avg
+
+
+Sol:-- SELECT names,marks From student where marks>(SELECT AVG(marks) FROM student);
+-----------------------------------------------------------------------------
+
+
+SQL Sub Queries 
+Example 2:-- 
+Find the names of all students with even roll numbers. 
+Step 1. Find the even roll numbers 
+Step 2. Find the names of students with even roll no
+
+Sol:- SELECT name, rollno FROM student
+      WHERE rollno IN (
+               SELECT rollno FROM student 
+               WHERE rollno % 2=0);
+
+
 
 
 
