@@ -1,0 +1,197 @@
+Steps of JDBC
+
+Import the JDBC package
+
+import java.sql.*;
+
+
+Load and Register the Driver
+
+Before Java 6:
+
+Class.forName("com.mysql.cj.jdbc.Driver");  
+
+
+Since Java 6, most JDBC 4.0 drivers are auto-registered, so this step is often optional.
+
+Establish the Connection
+Use DriverManager.getConnection() with database URL, username, and password.
+
+Connection con = DriverManager.getConnection(
+    "jdbc:mysql://localhost:3306/mydb", "root", "password");
+
+
+Create a Statement / PreparedStatement / CallableStatement
+
+For general SQL:
+
+Statement stmt = con.createStatement();
+
+
+For parameterized queries:
+
+PreparedStatement pstmt = con.prepareStatement("INSERT INTO student VALUES (?, ?)");
+
+
+For stored procedures:
+
+CallableStatement cstmt = con.prepareCall("{call myProcedure()}");
+
+
+Execute the Query
+
+For SELECT:
+
+ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+
+
+For INSERT, UPDATE, DELETE:
+
+int rows = stmt.executeUpdate("UPDATE student SET name='Aman' WHERE id=1");
+
+
+Process the Results
+
+If it’s a SELECT, retrieve data from ResultSet:
+
+while(rs.next()) {
+    System.out.println(rs.getInt(1) + " " + rs.getString(2));
+}
+
+
+Close the Resources
+Always close in reverse order to free resources:
+
+rs.close();
+stmt.close();
+con.close();
+
+
+
+✅ Summary of JDBC steps:
+Import → Load Driver → Establish Connection → Create Statement → Execute Query → Process Results → Close Resources
+
+
+
+
+
+
+
+==================================
+Java Program (JDBC Example)      
+======================================
+
+import java.sql.*;
+
+public class JdbcExample {
+    public static void main(String[] args) {
+        // Step 1: Database connection details
+        String url = "jdbc:mysql://localhost:3306/mydb"; // Replace "mydb" with your DB name
+        String user = "root"; // Your DB username
+        String password = "password"; // Your DB password
+
+        try {
+            // Step 2: Load and Register Driver (optional in newer versions)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Step 3: Establish Connection
+            Connection con = DriverManager.getConnection(url, user, password);
+            System.out.println("✅ Connection established successfully!");
+
+            // Step 4: Create Statement
+            Statement stmt = con.createStatement();
+
+            // Step 5: Execute Query
+            String query = "SELECT id, name FROM student"; // sample table
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Step 6: Process Results
+            System.out.println("ID | Name");
+            System.out.println("------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");        // column by name
+                String name = rs.getString("name");
+                System.out.println(id + " | " + name);
+            }
+
+            // Step 7: Close Resources
+            rs.close();
+            stmt.close();
+            con.close();
+            System.out.println("✅ Connection closed.");
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+========================================================================
+Java Program using PreparedStatement (Insert + Select)
+=========================================================================
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class JdbcPreparedStatementExample {
+    public static void main(String[] args) {
+        // Database details
+        String url = "jdbc:mysql://localhost:3306/mydb"; // your DB name
+        String user = "root"; 
+        String password = "password"; 
+
+        try {
+            // 1. Load driver (optional in newer versions)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // 2. Establish connection
+            Connection con = DriverManager.getConnection(url, user, password);
+            System.out.println("✅ Connected to database!");
+
+            // 3. Insert data using PreparedStatement
+            String insertQuery = "INSERT INTO student (id, name) VALUES (?, ?)";
+            PreparedStatement pstmt = con.prepareStatement(insertQuery);
+
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Enter Student ID: ");
+            int id = sc.nextInt();
+            sc.nextLine(); // consume newline
+            System.out.print("Enter Student Name: ");
+            String name = sc.nextLine();
+
+            pstmt.setInt(1, id);     // first "?" will be replaced by id
+            pstmt.setString(2, name); // second "?" will be replaced by name
+
+            int rows = pstmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("✅ Record inserted successfully!");
+            }
+
+            // 4. Fetch data
+            String selectQuery = "SELECT * FROM student";
+            PreparedStatement pstmt2 = con.prepareStatement(selectQuery);
+            ResultSet rs = pstmt2.executeQuery();
+
+            System.out.println("\nID | Name");
+            System.out.println("------------");
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " | " + rs.getString("name"));
+            }
+
+            // 5. Close resources
+            rs.close();
+            pstmt.close();
+            pstmt2.close();
+            con.close();
+            sc.close();
+            System.out.println("✅ Connection closed.");
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
